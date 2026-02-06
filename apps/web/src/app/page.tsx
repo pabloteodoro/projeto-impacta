@@ -7,23 +7,20 @@ import {
   CreditCard, Briefcase, BarChart, Settings 
 } from "lucide-react";
 
-// --- ATENÇÃO: O "export default" é OBRIGATÓRIO aqui ---
 export default function Dashboard() {
   return (
     <div className="flex min-h-screen bg-[#f3f4f6] font-sans text-gray-800">
-      
-      {/* 1. Sidebar Fixa */}
+
       <Sidebar />
 
-      {/* 2. Conteúdo Principal */}
+ 
       <main className="flex-1 lg:ml-64">
         
-        {/* Topbar */}
+    
         <Topbar />
 
-        {/* Conteúdo Scrollável */}
         <div className="p-8 pt-2">
-          {/* Breadcrumb / Título */}
+    
           <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between">
              <h2 className="text-2xl font-bold text-gray-800">Avisos Importantes</h2>
              <p className="text-[10px] text-gray-400 mt-2 md:mt-0 text-right">
@@ -31,13 +28,13 @@ export default function Dashboard() {
              </p>
           </div>
 
-          {/* GRID PRINCIPAL */}
+      
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
             
-            {/* --- COLUNA ESQUERDA (Maior) --- */}
+          
             <div className="space-y-6 lg:col-span-2">
               
-              {/* Card de Aviso (Amarelo) */}
+         
               <div className="relative overflow-hidden rounded-2xl bg-[#fff8e1] p-6 shadow-sm border border-orange-100">
                 <div className="flex items-start gap-4">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#f6c23e] text-white shadow-md">
@@ -58,7 +55,6 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Card Financeiro Grande */}
               <div className="rounded-2xl bg-white p-6 shadow-md border border-gray-100">
                 <div className="mb-4 flex items-center justify-between">
                   <h4 className="text-lg font-bold text-gray-800">Financeiro</h4>
@@ -78,7 +74,7 @@ export default function Dashboard() {
 
                 <h5 className="mb-3 text-sm font-bold text-[#2b5a9e]">Pendências</h5>
                 
-                {/* Item da Lista */}
+             
                 <div className="group rounded-xl bg-gray-50 p-4 border border-gray-100 flex justify-between items-center hover:bg-white hover:shadow-md transition cursor-pointer">
                    <div className="flex items-center gap-4">
                       <div className="bg-red-100 p-2.5 rounded-lg text-red-500">
@@ -102,7 +98,7 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Banner Pesquisa Azul */}
+            
               <div className="relative flex items-center justify-between overflow-hidden rounded-2xl bg-gradient-to-r from-[#1e3a63] to-[#2b5a9e] p-8 text-white shadow-lg">
                 <div className="relative z-10 max-w-lg">
                    <h3 className="text-xl font-bold uppercase mb-1">RESPONDA NOSSA PESQUISA</h3>
@@ -115,10 +111,9 @@ export default function Dashboard() {
 
             </div>
 
-            {/* --- COLUNA DIREITA (Lateral) --- */}
+         
             <div className="space-y-6">
-              
-              {/* Mini Financeiro / Resumo */}
+          
               <div className="rounded-2xl bg-white p-5 shadow-md border border-gray-100">
                 <h4 className="text-lg font-bold text-gray-800 mb-1">Financeiro</h4>
                 <p className="text-xs text-gray-500 mb-4">Saldo Atual: <span className="font-bold text-gray-900">R$ 0,00</span></p>
@@ -145,7 +140,7 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Documentos */}
+           
               <div className="rounded-2xl bg-white p-5 shadow-md border border-gray-100">
                 <div className="flex justify-between items-center mb-3">
                   <h4 className="text-lg font-bold text-gray-800">Documentos</h4>
@@ -172,7 +167,7 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Calendário Mini */}
+     
               <div className="rounded-2xl bg-white p-5 shadow-md border border-gray-100">
                  <div className="flex justify-between items-center mb-4">
                     <h4 className="text-lg font-bold text-gray-800">Calendário</h4>
@@ -184,11 +179,11 @@ export default function Dashboard() {
                        </div>
                     </div>
                  </div>
-                 {/* Grid Dias */}
+              
                  <div className="grid grid-cols-7 text-center text-[10px] text-gray-400 mb-2">
                     <span>Do</span><span>Se</span><span>Te</span><span>Qu</span><span>Qu</span><span>Se</span><span>Sá</span>
                  </div>
-                 {/* Grid Números */}
+               
                  <div className="grid grid-cols-7 gap-y-2 text-center text-xs font-medium text-gray-600">
                     <span className="text-gray-300">30</span><span className="text-gray-300">31</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
                     <span>6</span><span>7</span><span>8</span><span>9</span>
@@ -202,7 +197,7 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Botões Rápidos (Grid inferior direito) */}
+          
               <div className="grid grid-cols-4 gap-2">
                   <QuickLink icon={<CreditCard size={18}/>} label="Carteirinha Estudante" />
                   <QuickLink icon={<Briefcase size={18}/>} label="Portal de Vagas" />
@@ -218,7 +213,7 @@ export default function Dashboard() {
   );
 }
 
-// Subcomponente FORA da função principal
+
 function QuickLink({ icon, label }: { icon: React.ReactNode, label: string }) {
     return (
         <div className="flex flex-col items-center justify-center gap-1 rounded-xl bg-gray-200/60 p-2 py-3 text-center hover:bg-white hover:shadow-md cursor-pointer transition h-24">

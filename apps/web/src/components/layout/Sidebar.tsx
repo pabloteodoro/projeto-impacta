@@ -4,21 +4,28 @@ import {
   Wallet, FileText, FolderOpen, Mail, Book, Briefcase, 
   Award, Megaphone, MessageCircle, Settings
 } from "lucide-react";
-import Image from "next/image"; // Se tiver a logo, use. Caso contrário, texto.
+import Image from "next/image"; 
 
 export function Sidebar() {
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-64 flex-col bg-gradient-to-b from-[#0f1d38] to-[#0a1529] text-white transition-transform lg:translate-x-0 hidden lg:flex">
-      {/* Logo Area */}
-      <div className="flex h-20 items-center px-8">
-        {/* Substitua pelo componente <Image /> se tiver a logo salva em public */}
-        <h1 className="text-2xl font-bold uppercase tracking-wider">
-          IMPACTA
-        </h1>
+    <aside className="fixed left-0 top-0 z-40 h-screen w-64 flex flex-col bg-gradient-to-b from-[#0f1d38] to-[#0a1529] text-white transition-transform lg:translate-x-0 hidden lg:flex">
+      
+      {/* --- ÁREA DA LOGO (Corrigida) --- */}
+      <div className="flex h-24 w-full items-center justify-center border-b border-gray-700/30 px-6 py-4">
+        <div className="relative h-12 w-48">
+          {/* Certifique-se que o arquivo 'logo-impacta.png' está na pasta 'public' */}
+          <Image 
+            src="/logo-impacta.png" 
+            alt="Faculdade Impacta" 
+            fill
+            className="object-contain"
+            priority
+          />
+        </div>
       </div>
 
-      {/* Menu Items */}
-      <nav className="flex-1 space-y-1 overflow-y-auto px-4 py-4 scrollbar-hide">
+      {/* --- MENU ITENS --- */}
+      <nav className="flex-1 space-y-1 overflow-y-auto px-4 py-6 scrollbar-hide">
         <SidebarItem icon={<Wallet size={20} />} label="Financeiro" active />
         <SidebarItem icon={<FileText size={20} />} label="Documentos" badge="Novo" />
         <SidebarItem icon={<FolderOpen size={20} />} label="Minha Documentação" />
@@ -30,7 +37,7 @@ export function Sidebar() {
         <SidebarItem icon={<MessageCircle size={20} />} label="Contato dos Professores" hasSubmenu />
       </nav>
 
-      {/* Footer / Requisitos */}
+      {/* --- FOOTER / REQUISITOS --- */}
       <div className="border-t border-gray-700/50 p-4">
         <SidebarItem icon={<Settings size={20} />} label="Requisitos" hasSubmenu />
       </div>
@@ -38,12 +45,12 @@ export function Sidebar() {
   );
 }
 
-// Subcomponente auxiliar apenas para a Sidebar (pode ficar no mesmo arquivo)
+// Subcomponente de Item (Pode manter no mesmo arquivo)
 function SidebarItem({ icon, label, badge, active, hasSubmenu }: any) {
   return (
     <div className={`
-      group flex cursor-pointer items-center justify-between rounded-lg px-4 py-3 transition-all
-      ${active ? "bg-white/10 text-white shadow-lg backdrop-blur-sm" : "text-gray-400 hover:bg-white/5 hover:text-white"}
+      group flex cursor-pointer items-center justify-between rounded-lg px-4 py-3 transition-all mb-1
+      ${active ? "bg-blue-600/20 border-l-4 border-blue-500 text-white shadow-sm" : "text-gray-400 hover:bg-white/5 hover:text-white"}
     `}>
       <div className="flex items-center gap-3">
         {icon}
@@ -51,7 +58,7 @@ function SidebarItem({ icon, label, badge, active, hasSubmenu }: any) {
       </div>
       <div className="flex items-center gap-2">
         {badge && (
-          <span className="rounded bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+          <span className="rounded bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white shadow-sm">
             {badge}
           </span>
         )}

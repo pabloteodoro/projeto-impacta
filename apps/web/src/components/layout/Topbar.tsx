@@ -1,8 +1,17 @@
 "use client";
 
 import { LogOut, User } from "lucide-react";
+import { useRouter } from "next/navigation"; // 1. Importamos o hook de navegação
 
 export function Topbar() {
+  const router = useRouter(); // 2. Inicializamos o hook
+
+  // 3. Função executada ao clicar em Sair
+  const handleLogout = () => {
+    // Aqui você limparia cookies ou tokens de autenticação se existissem
+    router.push("/login"); 
+  };
+
   return (
     <header className="flex h-20 items-center justify-end bg-[#f3f4f6] px-8">
       <div className="flex items-center gap-4">
@@ -18,7 +27,10 @@ export function Topbar() {
         </div>
 
         {/* Botão Sair */}
-        <button className="flex items-center gap-2 rounded-lg bg-[#2b5a9e] px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700 transition shadow-sm">
+        <button 
+          onClick={handleLogout} // 4. Adicionamos o evento de clique
+          className="flex items-center gap-2 rounded-lg bg-[#2b5a9e] px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700 transition shadow-sm"
+        >
           <LogOut size={14} /> Sair
         </button>
       </div>
