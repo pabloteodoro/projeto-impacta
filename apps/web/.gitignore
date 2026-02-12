@@ -20,3 +20,5 @@ out
 
 # Prisma
 prisma/migrations
+
+/src/generated/prisma
