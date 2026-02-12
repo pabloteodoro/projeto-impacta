@@ -7,7 +7,7 @@ import type { Engine } from "tsparticles-engine";
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 import ReCAPTCHA from "react-google-recaptcha";
-import { loginAction } from "./actions"; // Importa a função que vai no banco
+import { loginAction } from "./actions"; 
 
 export default function LoginPage() {
   const router = useRouter(); 
@@ -16,7 +16,7 @@ export default function LoginPage() {
   const [ra, setRa] = useState("");
   const [senha, setSenha] = useState("");
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false); // Novo estado para feedback visual
+  const [loading, setLoading] = useState(false); 
 
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadSlim(engine);
@@ -25,32 +25,31 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault(); 
 
-    // 1. Validação do Captcha
+   
     if (!captchaToken) {
       alert("Por favor, confirme que você não é um robô.");
       return;
     }
 
-    setLoading(true); // Bloqueia o botão
+    setLoading(true); 
 
-    // 2. Prepara os dados para enviar ao servidor
+   
     const formData = new FormData();
     formData.append("ra", ra);
     formData.append("senha", senha);
 
     try {
-      // 3. Chama a Server Action (vai no banco PostgreSQL)
+     
       const result = await loginAction(formData);
 
       if (result.success) {
-        // Sucesso: Redireciona para a home
+        
         router.push("/");
       } else {
-        // Erro: Mostra o alerta e reseta o captcha
         alert(result.error);
         recaptchaRef.current?.reset();
         setCaptchaToken(null);
-        setLoading(false); // Libera o botão
+        setLoading(false); 
       }
     } catch (error) {
       alert("Erro de conexão. Tente novamente.");
@@ -149,7 +148,7 @@ export default function LoginPage() {
 
             <button
               type="submit" 
-              disabled={loading} // Desabilita se estiver carregando
+              disabled={loading}
               className="w-full rounded bg-gradient-to-b from-blue-600 to-blue-800 py-3 text-base font-bold text-white shadow-lg transition hover:from-blue-500 hover:to-blue-700 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Entrando..." : "Entrar"}
