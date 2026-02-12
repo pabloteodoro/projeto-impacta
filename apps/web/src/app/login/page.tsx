@@ -1,32 +1,39 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
 import { useRouter } from "next/navigation"; 
+import Image from "next/image"; 
 import type { Engine } from "tsparticles-engine";
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function LoginPage() {
   const router = useRouter(); 
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   
- 
   const [ra, setRa] = useState("");
   const [senha, setSenha] = useState("");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadSlim(engine);
   }, []);
 
-
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault(); 
 
+    if (!captchaToken) {
+      alert("Por favor, confirme que você não é um robô.");
+      return;
+    }
    
     if (ra === "2400741") {
-     
       router.push("/");
     } else {
       alert("RA incorreto. Tente novamente.");
+      recaptchaRef.current?.reset();
+      setCaptchaToken(null);
     }
   };
 
@@ -63,18 +70,25 @@ export default function LoginPage() {
         }}
       />
 
-      
       <div className="z-10 w-full max-w-md p-8 mx-4">
         <div className="relative rounded-2xl border border-white/20 bg-white/10 p-8 shadow-2xl backdrop-blur-md">
           
           <div className="mb-8 flex flex-col items-center text-center">
-            <div className="mb-2">
-               <h1 className="text-3xl font-bold text-white tracking-widest uppercase">IMPACTA</h1>
+            
+         
+            <div className="relative mb-2 h-16 w-64">
+               <Image 
+                 src="/logo-impacta.png" 
+                 alt="Faculdade Impacta" 
+                 fill 
+                 className="object-contain"
+                 priority 
+               />
             </div>
-            <p className="text-sm font-light text-gray-200">Acesso ao Portal Acadêmico</p>
+
+      
             <div className="mt-4 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-400/50 to-transparent"></div>
           </div>
-
          
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
@@ -96,6 +110,15 @@ export default function LoginPage() {
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)} 
                 className="w-full rounded bg-white/10 px-4 py-3 text-white placeholder-gray-400 outline-none ring-1 ring-white/20 transition focus:bg-white/20 focus:ring-blue-400"
+              />
+            </div>
+
+            <div className="flex justify-center py-2">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+                onChange={(token) => setCaptchaToken(token)}
+                theme="dark"
               />
             </div>
 
