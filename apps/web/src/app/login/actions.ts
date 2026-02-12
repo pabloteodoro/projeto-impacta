@@ -1,29 +1,36 @@
-'use server'
+"use server";
 
-export async function loginWithCaptcha(formData: FormData) {
-  const token = formData.get('g-recaptcha-response');
+import { PrismaClient } from "@prisma/client";
 
- 
-  if (!token) {
-    return { error: 'Por favor, complete o desafio do Captcha.' };
+
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
+const prisma = globalForPrisma.prisma || new PrismaClient();
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+
+
+export async function loginAction(formData: FormData) {
+  const ra = formData.get("ra") as string;
+  const senha = formData.get("senha") as string;
+
+  if (!ra || !senha) {
+    return { error: "Preencha todos os campos." };
   }
 
-  
-  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-  const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`;
+  try {
+   
+    const aluno = await prisma.aluno.findUnique({
+      where: { ra },
+    });
 
-  const res = await fetch(verificationUrl, { method: 'POST' });
-  const data = await res.json();
-
-  if (!data.success) {
-    return { error: 'Falha na validação do Captcha. Tente novamente.' };
-  }
+    if (!aluno || aluno.senha !== senha) {
+      return { error: "RA ou senha inválidos." };
+    }
 
  
-  const email = formData.get('email');
-  const password = formData.get('password');
-  
-
-  
-  return { success: true };
+    return { success: true, nome: aluno.nome };
+    
+  } catch (error) {
+    console.error("Erro no login:", error);
+    return { error: "Erro interno no servidor. Tente novamente mais tarde." };
+  }
 }
