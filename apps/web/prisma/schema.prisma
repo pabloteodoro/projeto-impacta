@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Aluno {
+  id        Int      @id @default(autoincrement())
+  ra        String   @unique
+  senha     String
+  nome      String
+  curso     String?
+  saldo     Decimal  @default(0.00)
+  createdAt DateTime @default(now())
+}
