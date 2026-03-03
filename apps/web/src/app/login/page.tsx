@@ -44,7 +44,7 @@ export default function LoginPage() {
 
       if (result.success) {
         
-        router.push("/");
+        router.push("/home");
       } else {
         alert(result.error);
         recaptchaRef.current?.reset();
