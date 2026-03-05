@@ -42,6 +42,6 @@ export async function loginAction(formData: FormData) {
     path: "/",
   });
 
-  // 🚀 Redirect direto no servidor (CORRETO)
+  
   redirect("/home");
 }

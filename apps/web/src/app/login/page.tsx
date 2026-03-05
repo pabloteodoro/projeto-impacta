@@ -63,7 +63,7 @@ export default function LoginPage() {
             <div className="mt-4 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-400/50 to-transparent"></div>
           </div>
 
-          {/* 🚀 FORM EXECUTA SERVER ACTION DIRETAMENTE */}
+         
           <form
             action={async (formData: FormData) => {
               if (!captchaToken) {
