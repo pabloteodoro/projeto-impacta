@@ -1,5 +1,5 @@
 export const runtime = "nodejs";
-
+import { Calendar } from "@/components/calendario/page";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import jwt from "jsonwebtoken";
@@ -136,6 +136,7 @@ export default async function Dashboard() {
                   <QuickLink icon={<Settings size={18} />} label="Parceria Microsoft" />
                 </div>
               </div>
+              <Calendar />
             </div>
           </div>
         </div>
