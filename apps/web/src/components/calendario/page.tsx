@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
+
 
 const diasSemana = ["Do", "Se", "Te", "Qu", "Qu", "Se", "Sá"];
 
@@ -23,6 +24,8 @@ const meses = [
 export function Calendar() {
   const hoje = new Date();
 
+  const [open, setOpen] = useState(false);
+
   const [dataAtual, setDataAtual] = useState(
     new Date(hoje.getFullYear(), hoje.getMonth(), 1)
   );
@@ -34,7 +37,7 @@ export function Calendar() {
   const ultimoDiaMes = new Date(ano, mes + 1, 0).getDate();
   const ultimoDiaMesAnterior = new Date(ano, mes, 0).getDate();
 
-  const dias = [];
+  const dias: { dia: number; outroMes: boolean }[] = [];
 
   for (let i = primeiroDiaSemana - 1; i >= 0; i--) {
     dias.push({
@@ -64,84 +67,172 @@ export function Calendar() {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-4 sm:p-5 w-full">
+    <>
+      {/* CALENDÁRIO RESUMIDO */}
+      <div className="bg-white rounded-2xl shadow-md p-4 sm:p-5 w-full">
 
-      {/* HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
-        <h3 className="font-bold text-gray-700 text-sm sm:text-base">
-          Calendário
-        </h3>
+        {/* HEADER */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+          <h3 className="font-bold text-gray-700 text-sm sm:text-base">
+            Calendário
+          </h3>
 
-        <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-gray-600">
-          <button
-            onClick={() => mudarMes(-1)}
-            className="p-1 rounded hover:bg-gray-100"
-          >
-            <ChevronLeft size={18} />
-          </button>
-
-          <span>
-            {meses[mes]} de {ano}
-          </span>
-
-          <button
-            onClick={() => mudarMes(1)}
-            className="p-1 rounded hover:bg-gray-100"
-          >
-            <ChevronRight size={18} />
-          </button>
-        </div>
-      </div>
-
-      {/* DIAS DA SEMANA */}
-      <div className="grid grid-cols-7 text-[10px] sm:text-xs text-gray-400 mb-2">
-        {diasSemana.map((dia, index) => (
-          <div key={index} className="text-center">
-            {dia}
-          </div>
-        ))}
-      </div>
-
-      {/* DIAS */}
-      <div className="grid grid-cols-7 gap-1 text-xs sm:text-sm">
-
-        {dias.map((item, index) => {
-          const isHoje =
-            item.dia === hoje.getDate() &&
-            mes === hoje.getMonth() &&
-            ano === hoje.getFullYear() &&
-            !item.outroMes;
-
-          return (
-            <div
-              key={index}
-              className="flex items-center justify-center h-8 sm:h-9 relative"
+          <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-gray-600">
+            <button
+              onClick={() => mudarMes(-1)}
+              className="p-1 rounded hover:bg-gray-100"
             >
-              <span
-                className={`
-                ${
-                  item.outroMes
-                    ? "text-gray-300"
-                    : "text-gray-700 hover:bg-gray-100"
-                }
-                ${isHoje ? "text-white z-10 font-bold" : ""}
-                flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full cursor-pointer
-                `}
+              <ChevronLeft size={18} />
+            </button>
+
+            <span>
+              {meses[mes]} de {ano}
+            </span>
+
+            <button
+              onClick={() => mudarMes(1)}
+              className="p-1 rounded hover:bg-gray-100"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        </div>
+
+        {/* DIAS DA SEMANA */}
+        <div className="grid grid-cols-7 text-[10px] sm:text-xs text-gray-400 mb-2">
+          {diasSemana.map((dia, index) => (
+            <div key={index} className="text-center">
+              {dia}
+            </div>
+          ))}
+        </div>
+
+        {/* DIAS */}
+        <div className="grid grid-cols-7 gap-1 text-xs sm:text-sm">
+          {dias.map((item, index) => {
+            const isHoje =
+              item.dia === hoje.getDate() &&
+              mes === hoje.getMonth() &&
+              ano === hoje.getFullYear() &&
+              !item.outroMes;
+
+            return (
+              <div
+                key={index}
+                className="flex items-center justify-center h-8 sm:h-9 relative"
               >
-                {item.dia}
+                <span
+                  className={`
+                  ${
+                    item.outroMes
+                      ? "text-gray-300"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }
+                  ${isHoje ? "text-white z-10 font-bold" : ""}
+                  flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full cursor-pointer
+                  `}
+                >
+                  {item.dia}
+                </span>
+
+                {isHoje && (
+                  <div className="absolute w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-full"></div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* BOTÃO MODAL */}
+        <button
+          onClick={() => setOpen(true)}
+          className="mt-4 text-xs sm:text-sm text-blue-600 font-semibold hover:underline"
+        >
+          Ver Calendário Completo →
+        </button>
+      </div>
+
+      {/* MODAL CALENDÁRIO COMPLETO */}
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-3xl p-6 relative">
+
+            {/* FECHAR */}
+            <button
+              onClick={() => setOpen(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
+            >
+              <X size={20} />
+            </button>
+
+            <h2 className="text-lg font-bold mb-6">
+              Calendário Completo
+            </h2>
+
+            {/* HEADER */}
+            <div className="flex justify-between items-center mb-6">
+
+              <button
+                onClick={() => mudarMes(-1)}
+                className="p-2 rounded hover:bg-gray-100"
+              >
+                <ChevronLeft />
+              </button>
+
+              <span className="font-semibold text-lg">
+                {meses[mes]} de {ano}
               </span>
 
-              {isHoje && (
-                <div className="absolute w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-full"></div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+              <button
+                onClick={() => mudarMes(1)}
+                className="p-2 rounded hover:bg-gray-100"
+              >
+                <ChevronRight />
+              </button>
 
-      <div className="mt-4 text-xs sm:text-sm text-blue-600 cursor-pointer font-semibold hover:underline">
-        Ver Calendário Completo →
-      </div>
-    </div>
+            </div>
+
+            {/* DIAS SEMANA */}
+            <div className="grid grid-cols-7 text-sm text-gray-400 mb-2">
+              {diasSemana.map((d, i) => (
+                <div key={i} className="text-center">
+                  {d}
+                </div>
+              ))}
+            </div>
+
+            {/* DIAS */}
+            <div className="grid grid-cols-7 gap-2 text-sm">
+              {dias.map((item, index) => {
+                const isHoje =
+                  item.dia === hoje.getDate() &&
+                  mes === hoje.getMonth() &&
+                  ano === hoje.getFullYear() &&
+                  !item.outroMes;
+
+                return (
+                  <div
+                    key={index}
+                    className={`
+                      h-10 flex items-center justify-center rounded-full
+                      ${
+                        item.outroMes
+                          ? "text-gray-300"
+                          : "hover:bg-gray-100 cursor-pointer"
+                      }
+                      ${isHoje ? "bg-blue-600 text-white font-bold" : ""}
+                    `}
+                  >
+                    {item.dia}
+                  </div>
+                );
+              })}
+            </div>
+
+          </div>
+        </div>
+      )}
+    </>
   );
 }
