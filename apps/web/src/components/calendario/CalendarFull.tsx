@@ -44,7 +44,7 @@ export function CalendarFull() {
 
     <div className="w-full">
 
-      {/* CONTROLES */}
+    
       <div className="flex justify-between items-center mb-6">
 
         <div className="flex gap-2">
@@ -73,14 +73,14 @@ export function CalendarFull() {
 
       </div>
 
-      {/* DIAS SEMANA */}
+     
       <div className="grid grid-cols-7 text-center text-sm text-gray-400 mb-2">
         {diasSemana.map((d)=>(
           <div key={d}>{d}</div>
         ))}
       </div>
 
-      {/* DIAS */}
+     
       <div className="grid grid-cols-7 gap-2">
 
         {dias.map((dia,i)=>{

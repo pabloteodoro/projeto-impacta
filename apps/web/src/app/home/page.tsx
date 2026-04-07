@@ -61,7 +61,7 @@ export default async function Dashboard() {
           curso={aluno.curso ?? ""}
         />
 
-        <div className="p-4 md:p-6 lg:p-8 pt-4">
+        <div className="p-6 md:p-10 lg:p-10 pt-6">
           <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <h2 className="text-xl md:text-2xl font-bold text-gray-800">
               Avisos Importantes
