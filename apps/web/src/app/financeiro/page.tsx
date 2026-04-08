@@ -7,6 +7,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
 import { ChevronRight, Home, Check, Printer, FileText } from "lucide-react";
 import Link from "next/link";
+import { FinanceiroModal } from "./FinanceiroModal";
 
 const prisma = new PrismaClient();
 const SECRET = process.env.JWT_SECRET!;
@@ -55,6 +56,7 @@ export default async function FinanceiroPage() {
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] font-sans text-gray-800">
+      <FinanceiroModal />
       <Sidebar />
 
       <main className="lg:ml-72 flex flex-col min-h-screen">
