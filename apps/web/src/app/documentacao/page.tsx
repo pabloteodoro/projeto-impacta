@@ -1,3 +1,4 @@
+// page.tsx
 export const runtime = "nodejs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -5,8 +6,9 @@ import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
-import { ChevronRight, Home, Upload } from "lucide-react";
+import { ChevronRight, Home } from "lucide-react";
 import Link from "next/link";
+import { UploadButton } from "./UploadButton";
 
 const prisma = new PrismaClient();
 const SECRET = process.env.JWT_SECRET!;
@@ -130,10 +132,7 @@ export default async function MinhaDocumentacaoPage() {
                               {item.status}
                             </span>
                             {!isEntregue && (
-                              <button className="flex items-center gap-1.5 bg-white border border-[#2b5a9e] text-[#2b5a9e] hover:bg-[#2b5a9e] hover:text-white px-3 py-1.5 rounded-md text-xs font-bold transition-all shadow-sm">
-                                <Upload size={14} />
-                                Anexar
-                              </button>
+                              <UploadButton documento={item.nome} />
                             )}
                           </div>
                         </td>
