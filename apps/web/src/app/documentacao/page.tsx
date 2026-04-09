@@ -7,10 +7,12 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
 import { ChevronRight, Home } from "lucide-react";
 import Link from "next/link";
-import { UploadButton } from "./UploadButton";
+import { DocumentTable } from "./DocumentTable";
 
 const prisma = new PrismaClient();
 const SECRET = process.env.JWT_SECRET!;
+
+type DocumentStatus = "Entregue" | "Não enviado" | "Em Validação";
 
 export default async function MinhaDocumentacaoPage() {
   const cookieStore = await cookies();
@@ -43,7 +45,7 @@ export default async function MinhaDocumentacaoPage() {
     redirect("/login");
   }
 
-  const mockDocumentos = [
+  const mockDocumentos: { nome: string; status: DocumentStatus }[] = [
     { nome: "RG", status: "Entregue" },
     { nome: "CPF", status: "Entregue" },
     { nome: "Reservista", status: "Não enviado" },
@@ -102,45 +104,7 @@ export default async function MinhaDocumentacaoPage() {
               </div>
             </div>
 
-            <div className="overflow-x-auto p-6 pt-0">
-              <table className="w-full text-left border-collapse min-w-[600px] border border-gray-200 rounded-lg overflow-hidden">
-                <thead>
-                  <tr className="bg-gray-100 border-b border-gray-200 text-gray-700 text-sm">
-                    <th className="px-6 py-4 font-bold text-center w-1/2">Documento</th>
-                    <th className="px-6 py-4 font-bold text-center w-1/2">Situação</th>
-                  </tr>
-                </thead>
-                <tbody className="text-sm">
-                  {mockDocumentos.map((item, index) => {
-                    const isEntregue = item.status === "Entregue";
-                    return (
-                      <tr 
-                        key={index} 
-                        className={`border-b border-gray-200 transition-colors ${
-                          isEntregue ? "bg-[#e8f5e9]/60 hover:bg-[#e8f5e9]" : "bg-gray-50/50 hover:bg-gray-100"
-                        }`}
-                      >
-                        <td className="px-6 py-4 text-center font-medium text-gray-700">
-                          {item.nome}
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center justify-center gap-4">
-                            <span className={`font-semibold ${
-                              isEntregue ? "text-green-700" : "text-gray-500"
-                            }`}>
-                              {item.status}
-                            </span>
-                            {!isEntregue && (
-                              <UploadButton documento={item.nome} />
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+            <DocumentTable initialData={mockDocumentos} />
 
           </div>
 

@@ -3,16 +3,27 @@
 import { useRef, useState } from "react";
 import { Upload, Check } from "lucide-react";
 
-export function UploadButton({ documento }: { documento: string }) {
+interface UploadButtonProps {
+  onUploadComplete: (fileName: string) => void;
+}
+
+export function UploadButton({ onUploadComplete }: UploadButtonProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showModal, setShowModal] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState("");
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      setUploadedFileName(file.name);
       event.target.value = "";
       setShowModal(true);
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    onUploadComplete(uploadedFileName);
   };
 
   return (
@@ -51,7 +62,7 @@ export function UploadButton({ documento }: { documento: string }) {
             </p>
             
             <button
-              onClick={() => setShowModal(false)}
+              onClick={handleCloseModal}
               className="bg-[#337ab7] hover:bg-[#286090] text-white px-10 py-2 rounded-[3px] text-[15px] font-medium transition-colors shadow-sm"
             >
               OK
