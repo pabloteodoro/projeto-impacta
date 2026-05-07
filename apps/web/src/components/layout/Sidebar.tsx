@@ -6,7 +6,6 @@ import {
   Wallet,
   FileText,
   FolderOpen,
-  Mail,
   Book,
   Briefcase,
   Award,
