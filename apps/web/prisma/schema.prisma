@@ -8,11 +8,28 @@ datasource db {
 }
 
 model Aluno {
-  id        Int      @id @default(autoincrement())
-  ra        String   @unique
-  senha     String
-  nome      String
-  curso     String?
-  saldo     Decimal  @default(0.00)
-  createdAt DateTime @default(now())
+  id         Int         @id @default(autoincrement())
+  ra         String      @unique
+  nome       String
+  senha      String
+  curso      String?
+  saldo      Decimal     @default(0) 
+  atividades Atividade[]
+  createdAt  DateTime    @default(now())
+}
+
+model Atividade {
+  id           Int      @id @default(autoincrement())
+  tipo         String
+  instituicao  String
+  evento       String
+  dataDe       DateTime
+  dataAte      DateTime
+  horas        Int
+  descricao    String?  @db.Text
+  arquivoPath  String?
+  createdAt    DateTime @default(now())
+
+  alunoId      Int
+  aluno        Aluno    @relation(fields: [alunoId], references: [id])
 }

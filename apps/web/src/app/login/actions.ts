@@ -1,47 +1,35 @@
-"use server";
+'use server'
 
-import { PrismaClient } from "@prisma/client";
-import { cookies } from "next/headers";
-import jwt from "jsonwebtoken";
-import { redirect } from "next/navigation";
+import { PrismaClient } from '@prisma/client'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation' // Adicione este import
+import jwt from 'jsonwebtoken'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
+const SECRET = process.env.JWT_SECRET!
 
 export async function loginAction(formData: FormData) {
-  const ra = formData.get("ra") as string;
-  const senha = formData.get("senha") as string;
-
-  if (!ra || !senha) {
-    return { error: "Preencha todos os campos." };
-  }
+  const ra = formData.get('ra') as string
+  const senha = formData.get('senha') as string
 
   const aluno = await prisma.aluno.findUnique({
-    where: { ra },
-  });
+    where: { ra }
+  })
 
   if (!aluno || aluno.senha !== senha) {
-    return { error: "RA ou senha inválidos." };
+    throw new Error('Credenciais inválidas')
   }
 
-  const token = jwt.sign(
-    {
-      id: aluno.id,
-      ra: aluno.ra,
-      nome: aluno.nome,
-    },
-    process.env.JWT_SECRET!,
-    { expiresIn: "1h" }
-  );
-
-  const cookieStore = await cookies();
-
-  cookieStore.set("token", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-  });
-
+  const token = jwt.sign({ id: aluno.id }, SECRET, { expiresIn: '1d' })
   
-  redirect("/home");
+  const cookieStore = await cookies()
+  cookieStore.set('token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 60 * 60 * 24,
+    path: '/',
+  })
+
+  // Faltou o redirecionamento final para sair do estado de "Entrando..."
+  redirect('/home')
 }
