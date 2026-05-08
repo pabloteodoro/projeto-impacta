@@ -47,7 +47,7 @@ export function Sidebar() {
         { icon: <FileText size={20} />, label: "Minha Documentação", href: "/documentacao" },
         { icon: <FolderOpen size={20} />, label: "Secretaria Online", active: true, href: "/secretaria" },
         { icon: <Book size={20} />, label: "Biblioteca", href: "/biblioteca" },
-        { icon: <Briefcase size={20} />, label: "Portal de Vagas", href: "/vagas" },
+        { icon: <Briefcase size={20} />, label: "Portal de Vagas", href: "https://app.walljobs.com.br/usuarios/entrar" },
         { icon: <School size={20} />, label: "CPA", href: "/cpa" },
         { icon: <Award size={20} />, label: "Atividades Complementares", href: "/atividades" },
         { icon: <Megaphone size={20} />, label: "Ouvidoria", href: "/ouvidoria" },
