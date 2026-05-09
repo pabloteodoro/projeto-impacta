@@ -27,7 +27,7 @@ export function FormRegistro({ aluno }: { aluno: { id: number; nome: string; ra:
           <input type="text" value={aluno.ra} readOnly className="md:col-span-3 bg-[#f9f9f9] border border-gray-200 rounded px-3 py-2 text-sm text-gray-400 outline-none" />
           
           <label className="text-[11px] font-bold text-gray-500 md:text-right uppercase">Tipo da Atividade:</label>
-          <select name="tipo" required className="md:col-span-3 border border-gray-300 rounded px-3 py-2 text-sm outline-none">
+          <select name="tipo" required className="md:col-span-3 border border-gray-300 rounded px-3 py-2 text-sm outline-none text-gray-700 font-medium">
             <option value="">-</option>
             <option value="Atividades Culturais - Cinema, Teatro, Museus e Exposições">Atividades Culturais - Cinema, Teatro, Museus e Exposições</option>
             <option value="Cidadania - Mesário em Eleições">Cidadania - Mesário em Eleições</option>
@@ -68,9 +68,20 @@ export function FormRegistro({ aluno }: { aluno: { id: number; nome: string; ra:
           <div className="flex flex-wrap gap-3">
             <label className="cursor-pointer bg-[#5cb85c] hover:bg-[#4cae4c] text-white px-4 py-2 rounded text-xs font-bold flex items-center gap-2 shadow-sm transition-all active:scale-95">
               <Upload size={14} /> Selecione o arquivo...
-              <input type="file" accept="application/pdf" className="hidden" ref={fileInputRef} onChange={(e) => setFile(e.target.files?.[0] || null)} />
+              <input 
+                type="file" 
+                name="arquivo" 
+                accept="application/pdf" 
+                className="hidden" 
+                ref={fileInputRef} 
+                onChange={(e) => setFile(e.target.files?.[0] || null)} 
+              />
             </label>
-            <button type="button" onClick={() => setFile(null)} className="bg-[#d9534f] hover:bg-[#c9302c] text-white px-4 py-2 rounded text-xs font-bold flex items-center gap-2 shadow-sm transition-all active:scale-95">
+            <button 
+              type="button" 
+              onClick={() => { setFile(null); if(fileInputRef.current) fileInputRef.current.value = ''; }} 
+              className="bg-[#d9534f] hover:bg-[#c9302c] text-white px-4 py-2 rounded text-xs font-bold flex items-center gap-2 shadow-sm transition-all active:scale-95"
+            >
               <Trash2 size={14} /> Delete
             </button>
           </div>

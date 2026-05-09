@@ -2,7 +2,7 @@
 
 import { PrismaClient } from '@prisma/client'
 import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation' // Adicione este import
+import { redirect } from 'next/navigation' 
 import jwt from 'jsonwebtoken'
 
 const prisma = new PrismaClient()
@@ -30,6 +30,5 @@ export async function loginAction(formData: FormData) {
     path: '/',
   })
 
-  // Faltou o redirecionamento final para sair do estado de "Entrando..."
   redirect('/home')
 }

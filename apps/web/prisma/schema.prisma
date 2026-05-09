@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Aluno {
@@ -27,7 +26,9 @@ model Atividade {
   dataAte      DateTime
   horas        Int
   descricao    String?  @db.Text
-  arquivoPath  String?
+  arquivoPath  String?  
+  status       String   @default("Pendente") 
+  retorno      String?  @db.Text            
   createdAt    DateTime @default(now())
 
   alunoId      Int

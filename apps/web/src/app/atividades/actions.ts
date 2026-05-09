@@ -7,31 +7,24 @@ import { redirect } from 'next/navigation'
 const prisma = new PrismaClient()
 
 export async function saveAtividade(formData: FormData, alunoId: number) {
-  const tipo = formData.get('tipo') as string
-  const instituicao = formData.get('instituicao') as string
-  const evento = formData.get('evento') as string
-  const dataDe = new Date(formData.get('dataDe') as string)
-  const dataAte = new Date(formData.get('dataAte') as string)
-  const horas = parseInt(formData.get('horas') as string)
-  const descricao = formData.get('descricao') as string
-
+  const file = formData.get('arquivo') as File; // Captura o arquivo pelo atributo 'name'
+  const fileName = file && file.name !== 'undefined' ? file.name : null;
 
   await prisma.atividade.create({
     data: {
-      tipo,
-      instituicao,
-      evento,
-      dataDe,
-      dataAte,
-      horas,
-      descricao,
-      alunoId,
+      tipo: formData.get('tipo') as string,
+      instituicao: formData.get('instituicao') as string,
+      evento: formData.get('evento') as string,
+      dataDe: new Date(formData.get('dataDe') as string),
+      dataAte: new Date(formData.get('dataAte') as string),
+      horas: parseInt(formData.get('horas') as string),
+      descricao: formData.get('descricao') as string,
+      arquivoPath: fileName, // Salva o nome identico do arquivo
+      alunoId: alunoId,
+      status: "Pendente",
     },
   })
 
-
   revalidatePath('/atividades')
-  
-
-  redirect('/atividades')
+  redirect('/atividades?tab=historico')
 }
