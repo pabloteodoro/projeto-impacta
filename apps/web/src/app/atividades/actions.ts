@@ -1,13 +1,11 @@
 'use server'
 
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma' 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
-const prisma = new PrismaClient()
-
 export async function saveAtividade(formData: FormData, alunoId: number) {
-  const file = formData.get('arquivo') as File; // Captura o arquivo pelo atributo 'name'
+  const file = formData.get('arquivo') as File;
   const fileName = file && file.name !== 'undefined' ? file.name : null;
 
   await prisma.atividade.create({
@@ -17,9 +15,9 @@ export async function saveAtividade(formData: FormData, alunoId: number) {
       evento: formData.get('evento') as string,
       dataDe: new Date(formData.get('dataDe') as string),
       dataAte: new Date(formData.get('dataAte') as string),
-      horas: parseInt(formData.get('horas') as string),
+      horas: parseInt(formData.get('horas') as string, 10),
       descricao: formData.get('descricao') as string,
-      arquivoPath: fileName, // Salva o nome identico do arquivo
+      arquivoPath: fileName,
       alunoId: alunoId,
       status: "Pendente",
     },
