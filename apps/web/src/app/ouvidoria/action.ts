@@ -1,8 +1,10 @@
+
 'use server'
 
-import { prisma } from '@/lib/prisma'
+import { PrismaClient } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
+
+const prisma = new PrismaClient();
 
 export async function saveOuvidoria(formData: FormData, alunoId: number) {
   const categoria = formData.get('categoria') as string
@@ -28,5 +30,4 @@ export async function saveOuvidoria(formData: FormData, alunoId: number) {
   })
 
   revalidatePath('/ouvidoria')
-  redirect('/ouvidoria?tab=historico')
 }

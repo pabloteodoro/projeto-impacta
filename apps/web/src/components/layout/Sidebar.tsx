@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation"; 
 import {
   Wallet,
   FileText,
@@ -27,7 +28,6 @@ interface MenuItem {
   label: string;
   href: string;
   isNew?: boolean;
-  active?: boolean;
 }
 
 interface MenuSection {
@@ -37,6 +37,7 @@ interface MenuSection {
 
 export function Sidebar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname(); 
 
   const menuSections: MenuSection[] = [
     {
@@ -45,7 +46,7 @@ export function Sidebar() {
         { icon: <FileText size={20} />, label: "Documentos / Prova SUB", href: "/documentos" },
         { icon: <Wallet size={20} />, label: "Financeiro Online", href: "/financeiro" },
         { icon: <FileText size={20} />, label: "Minha Documentação", href: "/documentacao" },
-        { icon: <FolderOpen size={20} />, label: "Secretaria Online", active: true, href: "/secretaria" },
+        { icon: <FolderOpen size={20} />, label: "Secretaria Online", href: "/secretaria" },
         { icon: <Book size={20} />, label: "Biblioteca", href: "/biblioteca" },
         { icon: <Briefcase size={20} />, label: "Portal de Vagas", href: "https://app.walljobs.com.br/usuarios/entrar" },
         { icon: <School size={20} />, label: "CPA", href: "/cpa" },
@@ -122,22 +123,32 @@ export function Sidebar() {
                 {section.title}
               </h3>
               
-              {section.items.map((item, itemIdx) => (
-                <SidebarItem 
-                  key={itemIdx} 
-                  icon={item.icon} 
-                  label={item.label} 
-                  href={item.href}
-                  active={item.active}
-                  isNew={item.isNew} 
-                />
-              ))}
+              {section.items.map((item, itemIdx) => {
+             
+                const isItemActive = pathname === item.href || pathname?.startsWith(item.href + "/");
+                
+                return (
+                  <SidebarItem 
+                    key={itemIdx} 
+                    icon={item.icon} 
+                    label={item.label} 
+                    href={item.href}
+                    active={isItemActive}
+                    isNew={item.isNew} 
+                  />
+                );
+              })}
             </div>
           ))}
         </nav>
 
         <div className="border-t border-gray-700/50 p-4 shrink-0">
-          <SidebarItem icon={<Settings size={20} />} label="Requisitos" href="/requisitos" />
+          <SidebarItem 
+            icon={<Settings size={20} />} 
+            label="Requisitos" 
+            href="/requisitos" 
+            active={pathname === "/requisitos"}
+          />
         </div>
       </aside>
     </>
